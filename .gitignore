@@ -1,0 +1,8 @@
+# 도구/에디터 설정 폴더 (GitHub에 올릴 필요 없음)
+.claude/
+
+# macOS가 자동 생성하는 숨김 파일
+.DS_Store
+
+# 나중에 npm 패키지 설치하면 생기는 폴더 (용량 커서 절대 안 올림)
+node_modules/
