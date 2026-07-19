@@ -11,14 +11,15 @@
 
 ## 현재 위치
 
-- **단계 0 — 개발 환경 & 워밍업** (진행 중)
-- 다음 마일스톤: **M1 — GitHub에 코드 push 성공**
+- **단계 0 — 개발 환경 & 워밍업** ✅ 완료
+- **단계 1 — JavaScript 기본기 / 1주차(변수·자료형·연산자·조건문·반복문)** (진행 중)
+- 다음 마일스톤: **M2 — JS/TS로 콘솔 프로그램 스스로 작성 가능**
 
 ---
 
 ## 마일스톤 체크리스트
 
-- [ ] **M1 (~1주):** GitHub에 코드 push 성공
+- [x] **M1 (~1주):** GitHub에 코드 push 성공 — 2026-07-19 달성 🎉
 - [ ] **M2 (~5주):** JS/TS로 콘솔 프로그램 스스로 작성 가능
 - [ ] **M3 (~7주):** React 웹 To-Do 앱 완성
 - [ ] **M4 (~12주):** 화면 여러 개짜리 RN 앱 실행
@@ -38,3 +39,16 @@
 - 완료: `git init` + 첫 커밋 성공 (`03de8c0 첫 커밋`, branch: main).
 - 배운 원리: 커밋에는 "git add로 무대에 올린 것"만 담긴다. `.gitignore`로 불필요한 파일(.claude 등) 제외.
 - **다음 할 일:** 나머지 파일 커밋 → GitHub 저장소(kang1979/studyApp) 생성 + remote 연결 + push (M1 마일스톤 완성).
+
+### 2026-07-19 (2일차) — 단계 0 완료, M1 달성 🎉
+- `git status`의 `??`(untracked, git이 아직 모르는 파일) → `git add` 후 `A`(staged) → 커밋으로 이어지는 흐름을 눈으로 확인.
+- 남은 3개 파일(.gitignore, CURRICULUM.md, PROGRESS.md) 커밋 (`a3d2a5b`) 후 `git push origin main` 성공.
+- **M1 달성:** GitHub(kang1979/studyApp)에 코드가 올라감. 앞으로 매 학습 결과물을 여기 커밋 → 커밋 기록이 곧 포트폴리오.
+- 단계 1 전체(4주차분) 학습 교안을 `docs/`에 HTML로 제작. 과제의 힌트·정답은 접힌 상태(`<details>`)라 스스로 풀어본 뒤에 열어보는 구조. `⌘P`로 PDF 저장도 가능.
+- 앞으로 새 단계에 들어가면 교안이 자동 생성되도록 `app-tutor` 규칙에 반영.
+- **다음 할 일:** `docs/stage1-week1.html`을 보며 `variables.js` 과제 5개 작성 → `node variables.js` 실행 확인 → 커밋.
+
+### 교안 위치
+- 목차: `docs/index.html` (브라우저로 열기)
+- 단계 1: `stage1-week1.html`(변수·조건문·반복문) / `week2`(함수·배열·객체) / `week3`(배열 메서드·비동기) / `week4`(TypeScript)
+- 단계 2 이후 교안은 해당 단계에 진입할 때 생성됩니다.

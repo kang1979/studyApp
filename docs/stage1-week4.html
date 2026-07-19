@@ -1,0 +1,446 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>단계 1 · 4주차 — TypeScript 기초</title>
+<style>
+:root{
+  --bg:#fdfcfa; --fg:#1c1a17; --muted:#6f6961; --line:#e6e1d9; --card:#fff;
+  --accent:#b0521f; --accent-soft:#fdf0e7; --code-bg:#f4f1ec; --code-fg:#2c2925;
+  --ok:#2f6b46; --ok-soft:#eaf5ee; --warn:#8a5600; --warn-soft:#fdf3e0;
+  --info:#1f5b96; --info-soft:#eaf2fb;
+}
+@media (prefers-color-scheme:dark){
+  :root{
+    --bg:#14130f; --fg:#eceae5; --muted:#a09a90; --line:#322e28; --card:#1c1a16;
+    --accent:#e88c4d; --accent-soft:#2b1d12; --code-bg:#211e19; --code-fg:#e2ded6;
+    --ok:#7bc99a; --ok-soft:#14251b; --warn:#e0ad52; --warn-soft:#292014;
+    --info:#79b0e8; --info-soft:#14202e;
+  }
+}
+*{box-sizing:border-box}
+body{
+  margin:0; background:var(--bg); color:var(--fg);
+  font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Pretendard","Noto Sans KR",sans-serif;
+  font-size:17px; line-height:1.75; word-break:keep-all;
+}
+.wrap{max-width:820px; margin:0 auto; padding:48px 22px 96px}
+a{color:var(--accent)}
+code,pre,kbd{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+code{background:var(--code-bg); color:var(--code-fg); padding:.12em .4em; border-radius:4px; font-size:.88em}
+pre{background:var(--code-bg); color:var(--code-fg); padding:16px 18px; border-radius:10px; overflow-x:auto; font-size:.88em; line-height:1.65; border:1px solid var(--line)}
+pre code{background:none; padding:0; font-size:1em}
+.crumb{font-size:.82rem; color:var(--muted); letter-spacing:.02em; margin-bottom:10px}
+.crumb a{color:var(--muted)}
+h1{font-size:1.85rem; line-height:1.35; margin:0 0 10px; letter-spacing:-.02em}
+.sub{color:var(--muted); margin:0 0 36px; font-size:1rem}
+h2{font-size:1.28rem; margin:52px 0 14px; padding-top:22px; border-top:1px solid var(--line); letter-spacing:-.01em}
+h3{font-size:1.05rem; margin:30px 0 8px}
+hr{border:0; border-top:1px solid var(--line); margin:44px 0}
+.box{border-radius:12px; padding:18px 20px; margin:22px 0; border:1px solid var(--line); background:var(--card)}
+.box p:first-child,.box ul:first-child,.box ol:first-child{margin-top:0}
+.box p:last-child,.box ul:last-child,.box ol:last-child{margin-bottom:0}
+.box .label{font-weight:700; font-size:.88rem; letter-spacing:.02em; display:block; margin-bottom:8px}
+.goal{background:var(--ok-soft); border-color:var(--ok)}
+.goal .label{color:var(--ok)}
+.trap{background:var(--warn-soft); border-color:var(--warn)}
+.trap .label{color:var(--warn)}
+.career{background:var(--info-soft); border-color:var(--info)}
+.career .label{color:var(--info)}
+.task{background:var(--accent-soft); border:1px solid var(--accent); border-radius:12px; padding:18px 20px; margin:20px 0}
+.task h3{margin:0 0 8px; font-size:1rem; color:var(--accent)}
+.task p{margin:.5em 0}
+details{margin:12px 0; border:1px solid var(--line); border-radius:9px; background:var(--card); overflow:hidden}
+summary{cursor:pointer; padding:10px 14px; font-size:.9rem; font-weight:600; list-style:none; user-select:none}
+summary::-webkit-details-marker{display:none}
+summary::before{content:"▶"; display:inline-block; margin-right:8px; font-size:.7em; transition:transform .15s; color:var(--muted)}
+details[open] summary::before{transform:rotate(90deg)}
+summary:hover{background:var(--code-bg)}
+details > *:not(summary){padding:0 14px; margin:10px 0}
+details > pre{margin:10px 14px; padding:14px 16px}
+.spoiler summary{color:var(--muted)}
+.warnline{font-size:.85rem; color:var(--warn); font-weight:600}
+ul,ol{padding-left:1.35em}
+li{margin:.3em 0}
+.check{list-style:none; padding-left:0}
+.check li{padding-left:1.7em; position:relative}
+.check li::before{content:"☐"; position:absolute; left:0; color:var(--muted)}
+footer{margin-top:64px; padding-top:22px; border-top:1px solid var(--line); font-size:.9rem; color:var(--muted)}
+.nav{display:flex; justify-content:space-between; gap:12px; margin-top:40px; font-size:.9rem}
+@media print{
+  body{font-size:11pt; background:#fff; color:#000}
+  .wrap{max-width:none; padding:0}
+  details{border-color:#bbb; break-inside:avoid}
+  details > *:not(summary){display:block !important}
+  summary::before{content:"▼"}
+  .nav{display:none}
+  h2{break-after:avoid}
+  .task,.box{break-inside:avoid}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="crumb"><a href="index.html">교안 목차</a> › 단계 1 · JavaScript 기본기</div>
+<h1>4주차 — TypeScript 기초</h1>
+<p class="sub">단계 1의 마지막 주입니다. TypeScript는 <strong>새 언어가 아니라 JS에 “타입”을 덧붙인 것</strong>입니다. 지금까지 짠 JS는 전부 그대로 유효합니다. 실무 React Native 프로젝트는 대부분 TS로 되어 있어, <strong>채용 공고의 우대사항에 거의 항상 등장</strong>합니다.</p>
+
+<div class="box goal">
+  <span class="label">이번 주 완료 기준</span>
+  <ul class="check">
+    <li>변수·함수에 타입을 붙일 수 있다</li>
+    <li><code>interface</code>로 객체의 모양을 정의할 수 있다</li>
+    <li>옵셔널(<code>?</code>)과 유니온(<code>|</code>)을 쓸 수 있다</li>
+    <li>타입 에러 메시지를 읽고 무엇이 잘못됐는지 파악할 수 있다</li>
+    <li>제네릭이 “무슨 문제를 푸는 도구인지” 설명할 수 있다</li>
+    <li><strong>M2 달성:</strong> JS/TS로 콘솔 프로그램을 스스로 작성할 수 있다</li>
+  </ul>
+</div>
+
+<h2>0. 실행 환경 준비</h2>
+
+<p>Node 24는 <code>.ts</code> 파일을 <strong>그냥 실행할 수 있습니다</strong>(타입 표기만 떼어내고 돌리는 방식). 먼저 이게 되는지 확인하세요.</p>
+
+<pre><code>cd ~/Desktop/studyApp
+echo 'const msg: string = "TS 안녕"; console.log(msg);' > check.ts
+node check.ts</code></pre>
+
+<p><code>TS 안녕</code>이 나오면 실행 준비 끝입니다. 다만 이 방식은 <strong>타입을 검사하지는 않고 떼어내기만</strong> 합니다. 타입 검사는 별도 도구가 합니다.</p>
+
+<pre><code>npm init -y                 # package.json 생성 (한 번만)
+npm install -D typescript   # 타입 검사기 설치
+npx tsc --init              # tsconfig.json 생성 (설정 파일)
+
+npx tsc --noEmit            # 타입 검사만 실행 ← 이게 핵심 명령어</code></pre>
+
+<div class="box">
+  <span class="label">💡 두 명령의 역할이 다릅니다</span>
+  <ul>
+    <li><code>node 파일.ts</code> — <strong>실행</strong>해서 결과를 본다</li>
+    <li><code>npx tsc --noEmit</code> — <strong>타입이 맞는지 검사</strong>한다 (실행은 안 함)</li>
+  </ul>
+  <p>VS Code를 쓰고 있다면 사실 <strong>저장할 때마다 에디터가 알아서 검사</strong>해서 빨간 밑줄을 그어줍니다. 그게 TS를 쓰는 가장 큰 이유이기도 합니다 — <em>실행하기 전에</em> 잘못을 알려주는 것.</p>
+</div>
+
+<h2>1. 왜 TypeScript인가</h2>
+
+<p>1주차의 함정을 기억하시나요? <code>"42" + 1</code>이 <code>"421"</code>이 되던 것.</p>
+
+<pre><code>// JavaScript — 실행해봐야 잘못된 걸 안다
+function add(a, b) {
+  return a + b;
+}
+add(3, 5);       // 8
+add("3", 5);     // "35"  ← 버그인데 아무도 안 알려줌</code></pre>
+
+<pre><code>// TypeScript — 쓰는 순간 빨간 줄
+function add(a: number, b: number): number {
+  return a + b;
+}
+add(3, 5);       // 8
+add("3", 5);     // ❌ Argument of type 'string' is not assignable to
+                 //    parameter of type 'number'.</code></pre>
+
+<p>핵심은 이것입니다. <strong>TS는 실행하기 전에, 코드를 쓰는 순간 잘못을 잡아줍니다.</strong> 프로그램이 커질수록 이 차이가 압도적으로 벌어집니다. “6개월 전에 짠 함수가 뭘 받는지” 코드만 봐도 알 수 있다는 것도 큽니다.</p>
+
+<h2>2. 기본 타입 붙이기</h2>
+
+<pre><code>const name: string = "강";
+let age: number = 30;
+const isStudent: boolean = false;
+
+const fruits: string[] = ["사과", "바나나"];      // 문자열 배열
+const scores: number[] = [90, 85, 100];          // 숫자 배열</code></pre>
+
+<p>변수 이름 뒤에 <code>: 타입</code>을 붙이면 끝입니다. 그런데 실무에서는 <strong>이걸 거의 생략합니다.</strong></p>
+
+<pre><code>const name = "강";          // TS가 알아서 string으로 추론
+let age = 30;               // number로 추론
+
+age = "서른";               // ❌ 타입을 안 썼는데도 에러가 난다!</code></pre>
+
+<p>TS는 <strong>대입된 값을 보고 타입을 스스로 알아냅니다</strong>(타입 추론). 그래서 <strong>변수에는 대체로 타입을 안 쓰고, 함수의 매개변수·반환에는 씁니다.</strong> 함수는 밖에서 뭐가 들어올지 TS가 알 수 없기 때문입니다.</p>
+
+<div class="box trap">
+  <span class="label">⚠️ <code>any</code>는 최후의 수단</span>
+<pre><code>let data: any = "아무거나";
+data = 42;
+data.어쩌구().저쩌구();     // 에러 안 남 — 실행하면 터짐</code></pre>
+  <p><code>any</code>는 “검사하지 마”라는 뜻입니다. 붙이는 순간 <strong>TS를 쓰는 이유가 사라집니다.</strong> 막힐 때 <code>any</code>로 덮고 넘어가고 싶은 유혹이 크지만, 그럴수록 나중에 터집니다.</p>
+  <p>정말 타입을 모르겠으면 <code>unknown</code>을 쓰세요 — “모른다. 그러니 쓰기 전에 확인해라”라고 강제합니다. 코드 리뷰에서 <code>any</code>는 거의 항상 지적됩니다.</p>
+</div>
+
+<h2>3. 함수에 타입 붙이기</h2>
+
+<pre><code>function greet(name: string): string {
+  return `안녕하세요, ${name}님!`;
+}
+//            ↑매개변수 타입   ↑반환 타입
+
+const double = (n: number): number => n * 2;    // 화살표 함수도 동일
+
+function printLog(message: string): void {      // 반환이 없으면 void
+  console.log(message);
+}</code></pre>
+
+<p><code>void</code>는 <strong>“아무것도 반환하지 않는다”</strong>는 뜻입니다. 2주차에서 <code>return</code>을 빠뜨리면 <code>undefined</code>가 나왔던 그 상황을, 이제는 <em>의도한 것인지 실수인지</em> 타입으로 구분할 수 있습니다.</p>
+
+<p>반환 타입은 추론되므로 생략해도 되지만, <strong>초보 때는 명시하는 편이 좋습니다.</strong> “내가 뭘 돌려주려 했는지”와 “실제로 돌려주는 것”이 다르면 TS가 즉시 알려주기 때문입니다.</p>
+
+<h2>4. interface — 객체의 모양 정하기</h2>
+
+<p>2주차에서 만든 할 일 객체를 떠올려 보세요. 그 “모양”에 이름을 붙이는 것이 <code>interface</code>입니다.</p>
+
+<pre><code>interface Todo {
+  id: number;
+  title: string;
+  done: boolean;
+}
+
+const todo: Todo = {
+  id: 1,
+  title: "TS 공부",
+  done: false,
+};
+
+const bad: Todo = {
+  id: "1",           // ❌ string은 number에 넣을 수 없음
+  title: "운동",
+                     // ❌ done이 없음: Property 'done' is missing
+};</code></pre>
+
+<p>한 번 정의하면 배열에도 함수에도 그대로 씁니다.</p>
+
+<pre><code>const todos: Todo[] = [ ... ];                 // Todo가 든 배열
+
+function countDone(list: Todo[]): number {     // 2주차 과제 5에 타입을 입힌 것
+  return list.filter(todo => todo.done).length;
+}</code></pre>
+
+<p>이제 <code>list.</code>까지만 쳐도 VS Code가 <code>id</code>, <code>title</code>, <code>done</code>을 <strong>자동완성으로 보여줍니다.</strong> 오타를 낼 수가 없습니다. 실무에서 TS를 쓰는 가장 체감되는 이점입니다.</p>
+
+<h3>옵셔널 <code>?</code> 과 유니온 <code>|</code></h3>
+
+<pre><code>interface User {
+  name: string;
+  age: number;
+  nickname?: string;        // ? = 있어도 되고 없어도 됨
+  role: "admin" | "user";   // | = 둘 중 하나만 허용
+}
+
+const u1: User = { name: "강", age: 30, role: "user" };            // ✅
+const u2: User = { name: "김", age: 25, role: "manager" };         // ❌ role 값이 틀림</code></pre>
+
+<p><code>"admin" | "user"</code>처럼 <strong>정해진 값만 허용</strong>하는 것을 유니온 타입이라고 합니다. 오타로 <code>"Admin"</code>이라고 쓰는 실수가 원천 차단됩니다. 실무에서 대단히 많이 쓰는 패턴입니다.</p>
+
+<details class="spoiler">
+  <summary>셀프 퀴즈 — 이 코드의 문제는?</summary>
+<pre><code>interface User {
+  name: string;
+  nickname?: string;
+}
+
+function shout(user: User): string {
+  return user.nickname.toUpperCase();
+}</code></pre>
+  <p><strong>답:</strong> <code>'user.nickname' is possibly 'undefined'.</code> 에러가 납니다.</p>
+  <p><code>nickname?</code>은 <em>없을 수도 있는</em> 값입니다. 없는데(<code>undefined</code>) <code>.toUpperCase()</code>를 부르면 실행 중에 터집니다 — JS라면 사용자가 쓰다가 앱이 죽고 나서야 알았을 버그입니다.</p>
+  <p>해결은 <strong>“없을 경우를 처리했음”을 코드로 보여주는 것</strong>입니다.</p>
+  <pre><code>if (!user.nickname) return "";
+return user.nickname.toUpperCase();
+
+// 또는
+return user.nickname?.toUpperCase() ?? "";</code></pre>
+  <p>TS는 <code>if</code>로 걸러낸 뒤에는 “여기선 값이 있구나”를 스스로 압니다(타입 좁히기). 잔소리처럼 느껴지지만, 실제 앱 크래시의 상당수가 정확히 이 <code>undefined</code> 문제입니다.</p>
+</details>
+
+<h2>5. 제네릭 — 타입을 나중에 정하기</h2>
+
+<p>제네릭은 단계 1에서 가장 어려운 개념입니다. <strong>지금은 “이런 게 있다” 수준으로만 알면 충분합니다.</strong> 뜻이 잘 안 와닿아도 괜찮으니 넘어가세요 — 실제로 필요해질 때 다시 오면 훨씬 쉽게 읽힙니다.</p>
+
+<p>이런 상황을 생각해 봅시다. “배열의 첫 번째 요소를 돌려주는 함수”를 만들려고 합니다.</p>
+
+<pre><code>function firstNumber(list: number[]): number { return list[0]; }
+function firstString(list: string[]): string { return list[0]; }
+function firstTodo(list: Todo[]): Todo       { return list[0]; }
+// ... 타입마다 하나씩? 끝이 없다</code></pre>
+
+<p>하는 일은 완전히 같은데 타입만 다릅니다. 그렇다고 <code>any</code>를 쓰면 결과 타입을 잃어버립니다. 여기서 <strong>“타입을 매개변수처럼 받는”</strong> 방법이 제네릭입니다.</p>
+
+<pre><code>function first&lt;T&gt;(list: T[]): T {
+  return list[0];
+}
+
+const n = first([1, 2, 3]);            // n은 number로 추론됨
+const s = first(["a", "b"]);           // s는 string
+const t = first(todos);                // t는 Todo</code></pre>
+
+<p><code>&lt;T&gt;</code>는 <strong>“타입 자리를 비워둔 것”</strong>입니다. 함수를 <em>호출할 때</em> 넘긴 값을 보고 TS가 <code>T</code>를 채웁니다. 변수가 값을 담는 상자라면, <code>T</code>는 <strong>타입을 담는 상자</strong>입니다.</p>
+
+<p><code>T</code>는 Type의 약자일 뿐 이름은 자유입니다. 직접 제네릭 함수를 만들 일은 당분간 없지만, <strong>남이 만든 것을 쓸 일은 곧 생깁니다</strong> — React의 <code>useState&lt;string&gt;("")</code>가 바로 제네릭입니다. 단계 2에서 만나면 “아, 그때 그거”가 되면 성공입니다.</p>
+
+<hr>
+
+<h2>📝 이번 주 과제 — 2주차 프로그램을 TS로 다시 쓰기</h2>
+
+<p><strong><code>todo.ts</code></strong> 파일을 만드세요. 2주차의 <code>todo.js</code>를 <strong>보면서</strong> 타입을 입혀 다시 작성하는 것이 과제입니다. (이번엔 참고해도 됩니다 — 목표가 “타입 붙이기”이므로.)</p>
+
+<p>작업할 때마다 <code>npx tsc --noEmit</code>으로 검사하고 <code>node todo.ts</code>로 실행해 보세요.</p>
+
+<div class="task">
+  <h3>과제 1 — Todo 인터페이스 정의</h3>
+  <p><code>id: number</code>, <code>title: string</code>, <code>done: boolean</code>을 가진 <code>Todo</code> 인터페이스를 만들고, <code>Todo[]</code> 타입의 배열에 할 일 3개를 담으세요.</p>
+  <details><summary>힌트</summary>
+    <p>1단계: <code>interface Todo { ... }</code> — 속성 구분은 세미콜론(<code>;</code>)입니다.</p>
+    <p>2단계: 배열 선언은 <code>const todos: Todo[] = [ ... ];</code></p>
+    <p>3단계: 일부러 <code>done</code>을 하나 빼보고 <strong>어떤 에러가 나는지 읽어보세요.</strong> 그게 이번 주 학습의 핵심입니다.</p>
+  </details>
+</div>
+
+<div class="task">
+  <h3>과제 2 — 함수에 타입 붙이기</h3>
+  <p>2주차의 <code>printTodos</code>와 <code>countDone</code>에 매개변수·반환 타입을 붙이세요. <code>countDone</code>은 3주차에서 배운 <code>filter</code>로 짧게 써보세요.</p>
+  <details><summary>힌트</summary>
+    <p>1단계: <code>printTodos</code>는 화면에 찍기만 하고 돌려주는 게 없습니다 → 반환 타입은?</p>
+    <p>2단계: <code>function countDone(list: Todo[]): number { ... }</code></p>
+  </details>
+</div>
+
+<div class="task">
+  <h3>과제 3 — 우선순위 추가 (유니온 타입)</h3>
+  <p><code>Todo</code>에 <code>priority: "high" | "normal" | "low"</code> 속성을 추가하고, 출력할 때 우선순위도 함께 보여주세요.</p>
+  <details><summary>힌트</summary>
+    <p>1단계: 인터페이스에 한 줄 추가하면, 기존 할 일 객체들에서 <strong>일제히 에러가 납니다</strong>. 정상입니다 — TS가 “고쳐야 할 곳”을 전부 찾아준 것입니다.</p>
+    <p>2단계: <code>priority: "urgent"</code>처럼 없는 값을 넣어보고 에러 메시지를 확인하세요.</p>
+  </details>
+</div>
+
+<div class="task">
+  <h3>과제 4 — 메모는 선택 사항 (옵셔널)</h3>
+  <p><code>memo?: string</code>을 추가하세요. 일부 할 일에만 메모를 달고, 출력 시 <strong>메모가 있을 때만</strong> 함께 보여주세요.</p>
+  <details><summary>힌트</summary>
+    <p>1단계: <code>?</code>를 붙였으므로 기존 객체들은 고칠 필요가 없습니다.</p>
+    <p>2단계: 출력할 때 <code>todo.memo.length</code> 같은 걸 바로 쓰면 TS가 막습니다. 왜일까요? (셀프 퀴즈를 다시 보세요.)</p>
+    <p>3단계: <code>if (todo.memo) { ... }</code>로 감싸면 그 안에서는 TS가 “있다”고 인정해줍니다.</p>
+  </details>
+</div>
+
+<div class="task">
+  <h3>과제 5 — 우선순위로 거르기 <em>(도전)</em></h3>
+  <p>우선순위를 받아 그에 해당하는 할 일만 돌려주는 <code>filterByPriority</code> 함수를 만드세요. 매개변수 타입에 유니온을 그대로 써서, <strong>잘못된 값을 넘기면 에러가 나게</strong> 하세요.</p>
+  <details><summary>힌트</summary>
+    <p>1단계: <code>function filterByPriority(list: Todo[], priority: ???): Todo[]</code></p>
+    <p>2단계: <code>???</code> 자리에 <code>"high" | "normal" | "low"</code>를 그대로 쓸 수 있습니다.</p>
+    <p>3단계: 같은 유니온을 두 군데 쓰게 되죠? 이름을 붙여 재사용할 수 있습니다 — <code>type Priority = "high" | "normal" | "low";</code> 그리고 두 곳 모두 <code>Priority</code>로 교체하세요. <strong>이게 이 과제의 진짜 목적입니다.</strong></p>
+  </details>
+</div>
+
+<details class="spoiler">
+  <summary>🔒 5개 전부 다 한 뒤에 열어보세요 — 정답 &amp; 해설</summary>
+  <p class="warnline">이번 주는 특히 <strong>에러 메시지를 직접 만나보는 것</strong>이 학습의 절반입니다. 일부러 틀린 값을 넣어보는 과정을 건너뛰지 마세요.</p>
+<pre><code>// todo.ts
+
+type Priority = "high" | "normal" | "low";
+
+interface Todo {
+  id: number;
+  title: string;
+  done: boolean;
+  priority: Priority;
+  memo?: string;
+}
+
+const todos: Todo[] = [
+  { id: 1, title: "TS 공부", done: true,  priority: "high", memo: "제네릭은 나중에" },
+  { id: 2, title: "운동",    done: false, priority: "normal" },
+  { id: 3, title: "장보기",  done: false, priority: "low",  memo: "우유, 계란" },
+];
+
+function printTodos(list: Todo[]): void {
+  for (const todo of list) {
+    const mark = todo.done ? "✅" : "⬜";
+    let line = `[${mark}] (${todo.priority}) ${todo.title}`;
+    if (todo.memo) {
+      line += ` — ${todo.memo}`;
+    }
+    console.log(line);
+  }
+}
+
+function countDone(list: Todo[]): number {
+  return list.filter(todo => todo.done).length;
+}
+
+function filterByPriority(list: Todo[], priority: Priority): Todo[] {
+  return list.filter(todo => todo.priority === priority);
+}
+
+printTodos(todos);
+console.log(`${todos.length}개 중 ${countDone(todos)}개 완료`);
+console.log("— 중요한 일 —");
+printTodos(filterByPriority(todos, "high"));</code></pre>
+
+  <p><strong>왜 이렇게 되는가</strong></p>
+  <ul>
+    <li><strong><code>type Priority</code>를 따로 뺀 이유:</strong> 같은 유니온을 인터페이스와 함수 두 곳에 쓰기 때문입니다. 나중에 <code>"urgent"</code>를 추가하고 싶을 때 <strong>한 곳만 고치면</strong> 됩니다. 2주차에서 중복된 코드를 함수로 묶었던 것과 정확히 같은 사고방식입니다.</li>
+    <li><strong><code>interface</code> vs <code>type</code>:</strong> 객체 모양에는 <code>interface</code>, 유니온처럼 “값의 집합”에는 <code>type</code>을 쓰는 것이 흔한 관례입니다. 거의 바꿔 쓸 수 있으니 지금은 고민하지 마세요.</li>
+    <li><strong><code>let line</code>이 <code>let</code>인 이유:</strong> 메모가 있을 때 뒤에 덧붙이므로 값이 <em>바뀝니다</em>. 1주차의 “일단 <code>const</code>, 바꿔야 할 때만 <code>let</code>” 규칙이 여기서 실제로 판단으로 이어집니다.</li>
+    <li><strong><code>if (todo.memo)</code>의 역할:</strong> 화면 출력을 위한 조건이면서 동시에 <strong>TS에게 “여기선 memo가 확실히 있다”고 알려주는</strong> 역할을 합니다. 하나의 <code>if</code>가 두 가지 일을 합니다.</li>
+    <li><strong><code>countDone</code>이 한 줄이 된 것</strong>에 주목하세요. 2주차에는 <code>let count = 0</code>부터 시작해 7줄이었습니다. 3주차의 <code>filter</code>가 그 일을 대신합니다 — 배운 것들이 쌓여 코드가 짧아지는 순간입니다.</li>
+  </ul>
+</details>
+
+<hr>
+
+<div class="box career">
+  <span class="label">💼 취업 관점</span>
+  <ul>
+    <li><strong>TS는 채용 공고의 단골 우대사항입니다.</strong> 신입 지원자 중 TS를 “써봤다”고 말할 수 있는 사람은 생각보다 적습니다. 포트폴리오가 TS로 되어 있으면 그 자체로 차별점입니다.</li>
+    <li><strong><code>any</code>가 흩뿌려진 코드는 감점입니다.</strong> “TS를 쓴다면서 검사를 끄고 있는” 것으로 읽힙니다. 정 급하면 <code>unknown</code> + 타입 검사를 쓰세요.</li>
+    <li><strong>“왜 TypeScript를 쓰나요?”는 면접 단골 질문입니다.</strong> “실행 전에 오류를 잡아주고, 자동완성으로 생산성이 오르며, 타입 자체가 문서 역할을 해서 협업에 유리하다” — 자기 경험을 곁들여 말할 수 있으면 충분합니다.</li>
+    <li><strong>단계 3부터 Expo 프로젝트는 TS로 시작하세요.</strong> <code>npx create-expo-app</code>이 TS 템플릿을 기본 제공합니다. 나중에 바꾸는 것보다 처음부터 TS로 가는 편이 훨씬 쉽습니다.</li>
+  </ul>
+</div>
+
+<div class="box goal">
+  <span class="label">🎉 단계 1 완주 — M2 마일스톤 점검</span>
+  <p>4주 동안 만든 결과물을 확인하세요. 커리큘럼이 요구한 “콘솔 미니 프로그램 3~5개”가 이미 채워져 있을 겁니다.</p>
+  <ul class="check">
+    <li><code>variables.js</code> — 변수·조건문·반복문</li>
+    <li><code>todo.js</code> — 함수·배열·객체</li>
+    <li><code>array-methods.js</code> — 배열 메서드</li>
+    <li><code>fetch-user.js</code> — 비동기 &amp; 실제 API 호출</li>
+    <li><code>todo.ts</code> — TypeScript</li>
+  </ul>
+  <p><strong>M2 자가 점검:</strong> “할 일 목록에서 완료되지 않은 항목만 골라 제목을 출력하는 프로그램을 <em>아무것도 안 보고</em> 짜보세요.” 막힘없이 된다면 단계 2(React)로 넘어가도 좋습니다.</p>
+</div>
+
+<div class="box">
+  <span class="label">✅ 다 했으면 — GitHub에 올리기</span>
+<pre><code>git add todo.ts tsconfig.json package.json
+git commit -m "단계1 4주차: TypeScript 기초 — 타입·인터페이스·유니온"
+git push origin main</code></pre>
+  <p><code>node_modules/</code>는 <code>.gitignore</code>에 이미 들어 있으니 올라가지 않습니다. <code>PROGRESS.md</code>에 <strong>M2 달성</strong>을 체크하는 것도 잊지 마세요.</p>
+</div>
+
+<h2>📚 더 볼 자료</h2>
+<ul>
+  <li><a href="https://www.typescriptlang.org/ko/docs/handbook/2/everyday-types.html">TypeScript 핸드북 — 일상적인 타입</a> (한국어)</li>
+  <li><a href="https://www.typescriptlang.org/play">TypeScript 플레이그라운드</a> — 설치 없이 브라우저에서 타입 실험</li>
+  <li><a href="https://ko.javascript.info/">모던 JavaScript 튜토리얼</a> — 헷갈리는 JS 문법이 있으면 언제든 여기로</li>
+</ul>
+
+<div class="nav">
+  <a href="stage1-week3.html">← 3주차</a>
+  <a href="index.html">목차 →</a>
+</div>
+
+<footer>
+  단계 1 · 4주차 — studyApp 학습 교안 · React Native 취업 커리큘럼
+</footer>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,384 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>단계 1 · 1주차 — 변수 · 자료형 · 조건문 · 반복문</title>
+<style>
+:root{
+  --bg:#fdfcfa; --fg:#1c1a17; --muted:#6f6961; --line:#e6e1d9; --card:#fff;
+  --accent:#b0521f; --accent-soft:#fdf0e7; --code-bg:#f4f1ec; --code-fg:#2c2925;
+  --ok:#2f6b46; --ok-soft:#eaf5ee; --warn:#8a5600; --warn-soft:#fdf3e0;
+  --info:#1f5b96; --info-soft:#eaf2fb;
+}
+@media (prefers-color-scheme:dark){
+  :root{
+    --bg:#14130f; --fg:#eceae5; --muted:#a09a90; --line:#322e28; --card:#1c1a16;
+    --accent:#e88c4d; --accent-soft:#2b1d12; --code-bg:#211e19; --code-fg:#e2ded6;
+    --ok:#7bc99a; --ok-soft:#14251b; --warn:#e0ad52; --warn-soft:#292014;
+    --info:#79b0e8; --info-soft:#14202e;
+  }
+}
+*{box-sizing:border-box}
+body{
+  margin:0; background:var(--bg); color:var(--fg);
+  font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Pretendard","Noto Sans KR",sans-serif;
+  font-size:17px; line-height:1.75; word-break:keep-all;
+}
+.wrap{max-width:820px; margin:0 auto; padding:48px 22px 96px}
+a{color:var(--accent)}
+code,pre,kbd{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+code{background:var(--code-bg); color:var(--code-fg); padding:.12em .4em; border-radius:4px; font-size:.88em}
+pre{background:var(--code-bg); color:var(--code-fg); padding:16px 18px; border-radius:10px; overflow-x:auto; font-size:.88em; line-height:1.65; border:1px solid var(--line)}
+pre code{background:none; padding:0; font-size:1em}
+
+.crumb{font-size:.82rem; color:var(--muted); letter-spacing:.02em; margin-bottom:10px}
+.crumb a{color:var(--muted)}
+h1{font-size:1.85rem; line-height:1.35; margin:0 0 10px; letter-spacing:-.02em}
+.sub{color:var(--muted); margin:0 0 36px; font-size:1rem}
+h2{font-size:1.28rem; margin:52px 0 14px; padding-top:22px; border-top:1px solid var(--line); letter-spacing:-.01em}
+h3{font-size:1.05rem; margin:30px 0 8px}
+hr{border:0; border-top:1px solid var(--line); margin:44px 0}
+
+.box{border-radius:12px; padding:18px 20px; margin:22px 0; border:1px solid var(--line); background:var(--card)}
+.box p:first-child,.box ul:first-child,.box ol:first-child{margin-top:0}
+.box p:last-child,.box ul:last-child,.box ol:last-child{margin-bottom:0}
+.box .label{font-weight:700; font-size:.88rem; letter-spacing:.02em; display:block; margin-bottom:8px}
+.goal{background:var(--ok-soft); border-color:var(--ok)}
+.goal .label{color:var(--ok)}
+.trap{background:var(--warn-soft); border-color:var(--warn)}
+.trap .label{color:var(--warn)}
+.career{background:var(--info-soft); border-color:var(--info)}
+.career .label{color:var(--info)}
+
+.task{background:var(--accent-soft); border:1px solid var(--accent); border-radius:12px; padding:18px 20px; margin:20px 0}
+.task h3{margin:0 0 8px; font-size:1rem; color:var(--accent)}
+.task p{margin:.5em 0}
+
+details{margin:12px 0; border:1px solid var(--line); border-radius:9px; background:var(--card); overflow:hidden}
+summary{cursor:pointer; padding:10px 14px; font-size:.9rem; font-weight:600; list-style:none; user-select:none}
+summary::-webkit-details-marker{display:none}
+summary::before{content:"▶"; display:inline-block; margin-right:8px; font-size:.7em; transition:transform .15s; color:var(--muted)}
+details[open] summary::before{transform:rotate(90deg)}
+summary:hover{background:var(--code-bg)}
+details > *:not(summary){padding:0 14px; margin:10px 0}
+details > pre{margin:10px 14px; padding:14px 16px}
+.spoiler summary{color:var(--muted)}
+.warnline{font-size:.85rem; color:var(--warn); font-weight:600}
+
+ul,ol{padding-left:1.35em}
+li{margin:.3em 0}
+.check{list-style:none; padding-left:0}
+.check li{padding-left:1.7em; position:relative}
+.check li::before{content:"☐"; position:absolute; left:0; color:var(--muted)}
+footer{margin-top:64px; padding-top:22px; border-top:1px solid var(--line); font-size:.9rem; color:var(--muted)}
+footer a{display:inline-block; margin-right:14px}
+.nav{display:flex; justify-content:space-between; gap:12px; margin-top:40px; font-size:.9rem}
+
+@media print{
+  body{font-size:11pt; background:#fff; color:#000}
+  .wrap{max-width:none; padding:0}
+  details{border-color:#bbb; break-inside:avoid}
+  details > *:not(summary){display:block !important}
+  summary::before{content:"▼"}
+  .nav{display:none}
+  h2{break-after:avoid}
+  .task,.box{break-inside:avoid}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="crumb"><a href="index.html">교안 목차</a> › 단계 1 · JavaScript 기본기</div>
+<h1>1주차 — 변수 · 자료형 · 연산자 · 조건문 · 반복문</h1>
+<p class="sub">프로그래밍의 “문장 구조”에 해당하는 부분입니다. 이 다섯 가지만 있으면 이미 웬만한 프로그램의 뼈대는 만들 수 있습니다.</p>
+
+<div class="box goal">
+  <span class="label">이번 주 완료 기준</span>
+  <p>아래를 <strong>보지 않고</strong> 할 수 있으면 통과입니다.</p>
+  <ul class="check">
+    <li><code>let</code>과 <code>const</code>를 상황에 맞게 골라 쓸 수 있다</li>
+    <li>문자열·숫자·불리언을 구분하고 <code>typeof</code>로 확인할 수 있다</li>
+    <li><code>if / else if / else</code>로 갈림길을 만들 수 있다</li>
+    <li><code>for</code> 반복문을 직접 써서 원하는 횟수만큼 반복시킬 수 있다</li>
+    <li><code>node 파일.js</code>로 실행하고, 에러가 나면 메시지를 읽고 원인을 짐작할 수 있다</li>
+  </ul>
+</div>
+
+<h2>1. 변수 — 값에 이름표를 붙이는 것</h2>
+
+<p>변수는 <strong>값을 담아두고 이름을 붙여놓는 상자</strong>입니다. 이름을 붙여두면 나중에 그 이름으로 꺼내 쓸 수 있습니다.</p>
+
+<pre><code>const name = "강";   // const = 한 번 정하면 바꾸지 않는 값
+let age = 30;        // let  = 나중에 바뀔 수 있는 값
+
+age = 31;            // ✅ OK — let이니까 바꿀 수 있다
+// name = "김";      // ❌ TypeError: Assignment to constant variable.</code></pre>
+
+<p><code>=</code>는 “같다”가 아니라 <strong>“오른쪽 값을 왼쪽 이름에 넣어라”</strong>라는 뜻입니다. 수학의 등호와 다릅니다.</p>
+
+<div class="box">
+  <span class="label">💡 실무 규칙</span>
+  <p><strong>일단 전부 <code>const</code>로 쓰고, 바꿔야만 하는 것만 <code>let</code>으로 바꾼다.</strong> 이렇게 하면 “이 값은 중간에 안 바뀌는구나”가 코드만 봐도 보여서 읽기 쉬워집니다. 실무 코드의 대부분은 <code>const</code>입니다.</p>
+  <p><code>var</code>라는 것도 검색하면 나오는데, 옛날 문법이고 헷갈리는 동작이 많아 <strong>지금은 쓰지 않습니다</strong>. 오래된 블로그 글에서 보이면 “아 옛날 코드구나” 하고 넘기세요.</p>
+</div>
+
+<details class="spoiler">
+  <summary>셀프 퀴즈 — 이 코드는 어떻게 될까요?</summary>
+  <pre><code>let count = 1;
+count = count + 1;
+const total = 10;
+total = 20;
+console.log(count, total);</code></pre>
+  <p><strong>답:</strong> 실행되다가 <code>total = 20;</code> 줄에서 <code>TypeError: Assignment to constant variable.</code> 에러가 나며 멈춥니다. <code>console.log</code>는 아예 실행되지 못합니다.</p>
+  <p>여기서 중요한 건 <code>count = count + 1</code>이 성립한다는 점입니다. 수학에서는 말이 안 되지만, <code>=</code>가 “넣어라”이므로 <em>“지금 count에 1을 더한 값을 다시 count에 넣어라”</em>가 되어 자연스럽습니다.</p>
+</details>
+
+<h2>2. 자료형 — 값의 “종류”</h2>
+
+<p>값에는 종류가 있고, 종류에 따라 할 수 있는 일이 다릅니다. 지금은 세 가지만 확실히 알면 됩니다.</p>
+
+<pre><code>const text = "문자열";   // string  — 따옴표로 감싼 글자
+const num  = 42;         // number  — 따옴표 없는 숫자
+const flag = true;       // boolean — true 또는 false, 딱 두 개뿐
+
+console.log(typeof text);  // "string"
+console.log(typeof num);   // "number"
+console.log(typeof flag);  // "boolean"</code></pre>
+
+<p><code>typeof</code>는 “이거 무슨 종류야?”라고 물어보는 도구입니다. 헷갈릴 때마다 찍어보세요.</p>
+
+<div class="box trap">
+  <span class="label">⚠️ 가장 많이 걸리는 함정 — <code>"42"</code>와 <code>42</code>는 다르다</span>
+<pre><code>42 + 1      // 43   ← 숫자 + 숫자 = 덧셈
+"42" + 1    // "421" ← 문자열 + 무엇 = 이어붙이기!</code></pre>
+  <p>JS에서 <code>+</code>는 <strong>숫자끼리면 더하기, 한쪽이라도 문자열이면 이어붙이기</strong>가 됩니다. 나중에 사용자 입력을 받으면 숫자처럼 보여도 실제로는 문자열 <code>"42"</code>인 경우가 많아, 이 함정에 반드시 한 번은 걸립니다. 그때 <code>Number("42")</code>로 숫자로 바꿔줍니다.</p>
+</div>
+
+<h2>3. 연산자 — 값을 가지고 계산·비교하기</h2>
+
+<pre><code>// 산술
+10 + 3   // 13
+10 - 3   // 7
+10 * 3   // 30
+10 / 3   // 3.3333...
+10 % 3   // 1   ← 나머지! 나눗셈의 몫이 아니라 "남는 것"
+
+// 비교 (결과는 항상 true 또는 false)
+5 > 3      // true
+5 === 5    // true   ← 같냐?
+5 !== 3    // true   ← 다르냐?
+
+// 논리
+true && false  // false  ← 그리고(AND): 둘 다 참이어야 참
+true || false  // true   ← 또는(OR): 하나만 참이면 참
+!true          // false  ← 부정(NOT): 뒤집기</code></pre>
+
+<p><code>%</code>(나머지)는 지금은 낯설지만 <strong>“짝수/홀수 판별”</strong>에 필수라 자주 씁니다. <code>i % 2 === 0</code>이면 2로 나눈 나머지가 0 → 짝수입니다.</p>
+
+<div class="box trap">
+  <span class="label">⚠️ <code>=</code> · <code>==</code> · <code>===</code> 구별하기</span>
+  <ul>
+    <li><code>=</code> — <strong>넣어라</strong> (할당). <code>age = 31</code></li>
+    <li><code>==</code> — 느슨한 비교. <code>"5" == 5</code>가 <strong>true</strong>가 되어버림 (종류를 무시하고 비교)</li>
+    <li><code>===</code> — 엄격한 비교. <code>"5" === 5</code>는 <strong>false</strong> (값도 종류도 같아야 참)</li>
+  </ul>
+  <p><strong>비교는 항상 <code>===</code>, 다름은 <code>!==</code>를 쓰세요.</strong> <code>==</code>는 예상 못한 곳에서 버그를 만듭니다. 실무 코드 리뷰에서도 <code>==</code>는 지적 대상입니다.</p>
+</div>
+
+<h2>4. 조건문 — 갈림길 만들기</h2>
+
+<pre><code>const age = 20;
+
+if (age >= 20) {
+  console.log("성인");
+} else {
+  console.log("미성년자");
+}</code></pre>
+
+<p>갈림길이 셋 이상이면 <code>else if</code>를 끼워넣습니다. <strong>위에서부터 순서대로 검사해서, 처음 맞는 곳 하나만 실행</strong>하고 나머지는 건너뜁니다.</p>
+
+<pre><code>const score = 85;
+
+if (score >= 90) {
+  console.log("A");
+} else if (score >= 80) {
+  console.log("B");     // ← 여기서 걸리고 끝. 아래는 안 봄
+} else if (score >= 70) {
+  console.log("C");
+} else {
+  console.log("F");
+}</code></pre>
+
+<details class="spoiler">
+  <summary>셀프 퀴즈 — 순서를 뒤집으면?</summary>
+  <p>위 코드에서 조건 순서를 <code>>= 70</code>, <code>>= 80</code>, <code>>= 90</code> 순으로 뒤집으면 <code>score = 85</code>일 때 뭐가 출력될까요?</p>
+  <p><strong>답: <code>"C"</code></strong>입니다. 85는 <code>>= 70</code>도 만족하므로 <strong>가장 위에서 걸려버리고</strong> 그 아래는 검사조차 하지 않기 때문입니다.</p>
+  <p>그래서 <code>else if</code> 사슬은 <strong>좁은 조건(엄격한 것)부터 위에</strong> 놓아야 합니다. 초보자가 자주 만드는 “왜 항상 같은 결과만 나오지?” 버그의 정체가 대개 이것입니다.</p>
+</details>
+
+<h2>5. 반복문 — 같은 일 여러 번 시키기</h2>
+
+<p>1부터 5까지 출력하려고 <code>console.log</code>를 다섯 번 쓰는 대신, 컴퓨터에게 반복을 맡깁니다.</p>
+
+<pre><code>for (let i = 1; i <= 5; i++) {
+  console.log(i);   // 1 2 3 4 5
+}</code></pre>
+
+<p><code>for</code> 괄호 안은 세미콜론으로 나뉜 <strong>세 부분</strong>입니다.</p>
+
+<pre><code>for ( let i = 1 ;  i &lt;= 5 ;  i++ )
+//    ①시작값     ②계속조건  ③매번 할 일</code></pre>
+
+<ul>
+  <li><strong>① 시작값</strong> — <code>i</code>를 1부터 시작 (딱 한 번만 실행)</li>
+  <li><strong>② 계속 조건</strong> — 이게 <code>true</code>인 동안 계속 반복. <code>false</code>가 되는 순간 멈춤</li>
+  <li><strong>③ 매번 할 일</strong> — 한 바퀴 돌 때마다 실행. <code>i++</code>는 <code>i = i + 1</code>의 줄임말</li>
+</ul>
+
+<p><code>i</code>는 index(순번)의 첫 글자로, 반복 횟수를 세는 변수에 관습적으로 붙이는 이름입니다. 매 바퀴 값이 <em>바뀌므로</em> <code>const</code>가 아니라 <code>let</code>을 씁니다.</p>
+
+<div class="box trap">
+  <span class="label">⚠️ <code>&lt;</code> 와 <code>&lt;=</code> 한 끗 차이</span>
+<pre><code>for (let i = 1; i &lt; 5; i++)    // 1 2 3 4   ← 5가 빠진다!
+for (let i = 1; i &lt;= 5; i++)   // 1 2 3 4 5</code></pre>
+  <p>“하나 모자라거나 하나 더 나오는” 이 실수는 이름까지 붙어 있습니다 — <strong>off-by-one 에러</strong>. 경력자도 합니다. 결과가 이상하면 제일 먼저 여기를 의심하세요.</p>
+  <p>그리고 조건이 <strong>영원히 <code>true</code></strong>가 되면 프로그램이 멈추지 않습니다(무한 루프). 터미널이 먹통이 되면 <kbd>Ctrl</kbd> + <kbd>C</kbd>로 강제 종료하세요.</p>
+</div>
+
+<hr>
+
+<h2>📝 이번 주 과제</h2>
+
+<p><strong><code>variables.js</code></strong> 파일을 만들고 아래 5개를 차례로 작성한 뒤, 터미널에서 <code>node variables.js</code>로 실행하세요.</p>
+
+<div class="box">
+  <p style="margin:0"><strong>복사·붙여넣기 금지.</strong> 반드시 직접 타이핑하세요. 손으로 쳐야 오타도 나고, 에러도 나고, 그 과정에서 실력이 붙습니다. 눈으로 읽어서 아는 것과 손으로 쳐서 아는 것은 완전히 다릅니다.</p>
+</div>
+
+<div class="task">
+  <h3>과제 1 — 이름과 나이 출력</h3>
+  <p><code>const</code>로 본인 이름을, <code>let</code>으로 나이를 담고 <code>console.log</code>로 각각 출력하세요.</p>
+  <details><summary>힌트</summary>
+    <p>1단계: 변수 두 개를 만들고, 그 아래 줄에서 <code>console.log(변수이름)</code>을 호출하면 됩니다.</p>
+    <p>2단계: <code>console.log</code>는 쉼표로 여러 개를 한 번에 찍을 수도 있습니다 — <code>console.log(a, b)</code></p>
+  </details>
+</div>
+
+<div class="task">
+  <h3>과제 2 — 나이 1살 더하기</h3>
+  <p>과제 1의 나이 변수에 1을 더해서 다시 출력하세요. (<code>let</code>으로 선언한 이유가 여기서 드러납니다.)</p>
+  <details><summary>힌트</summary>
+    <p>1단계: “나이에 1을 더한 값을, 다시 나이에 넣는다”를 코드로 쓰면 됩니다.</p>
+    <p>2단계: <code>age = age + 1;</code> — 혹은 더 짧게 <code>age++;</code></p>
+  </details>
+</div>
+
+<div class="task">
+  <h3>과제 3 — 성인 판별</h3>
+  <p><code>if</code>를 써서 나이가 20 이상이면 <code>"성인"</code>, 아니면 <code>"미성년자"</code>를 출력하세요.</p>
+  <details><summary>힌트</summary>
+    <p>1단계: 조건은 “나이가 20 이상”이므로 <code>>=</code>를 씁니다.</p>
+    <p>2단계: <code>if (조건) { ... } else { ... }</code> 구조에 채워 넣으세요. 중괄호 <code>{}</code> 짝이 맞는지 확인!</p>
+  </details>
+</div>
+
+<div class="task">
+  <h3>과제 4 — 1부터 10까지 출력</h3>
+  <p><code>for</code> 반복문으로 1, 2, 3 … 10을 차례로 출력하세요.</p>
+  <details><summary>힌트</summary>
+    <p>1단계: 위 예제의 <code>for (let i = 1; i &lt;= 5; i++)</code>에서 숫자 하나만 바꾸면 됩니다.</p>
+    <p>2단계: 10이 <strong>포함</strong>되어야 하므로 <code>&lt;</code>가 아니라 <code>&lt;=</code>입니다.</p>
+  </details>
+</div>
+
+<div class="task">
+  <h3>과제 5 — 짝수만 출력 <em>(도전)</em></h3>
+  <p>1부터 10까지 중 <strong>짝수만</strong> 출력하세요. → <code>2 4 6 8 10</code></p>
+  <details><summary>힌트</summary>
+    <p>1단계: 과제 4의 반복문 <strong>안에</strong> 조건문을 하나 넣으면 됩니다. “돌면서, 짝수일 때만 출력”</p>
+    <p>2단계: “짝수다”를 코드로 어떻게 표현할까요? 2로 나눈 나머지가 0이면 짝수입니다.</p>
+    <p>3단계: <code>if (i % 2 === 0) { ... }</code></p>
+  </details>
+</div>
+
+<details class="spoiler">
+  <summary>🔒 5개 전부 다 한 뒤에 열어보세요 — 정답 &amp; 해설</summary>
+  <p class="warnline">먼저 최소 15분은 스스로 시도해보세요. 막혀서 답답한 그 시간에 실력이 붙습니다. 답을 먼저 보면 “아 알겠다” 싶지만 다음에 또 못 씁니다.</p>
+<pre><code>// variables.js
+
+// 과제 1
+const name = "강";
+let age = 30;
+console.log(name, age);
+
+// 과제 2
+age = age + 1;      // age++ 와 같음
+console.log(age);   // 31
+
+// 과제 3
+if (age >= 20) {
+  console.log("성인");
+} else {
+  console.log("미성년자");
+}
+
+// 과제 4
+for (let i = 1; i &lt;= 10; i++) {
+  console.log(i);
+}
+
+// 과제 5
+for (let i = 1; i &lt;= 10; i++) {
+  if (i % 2 === 0) {
+    console.log(i);
+  }
+}</code></pre>
+  <p><strong>왜 이렇게 되는가</strong></p>
+  <ul>
+    <li><strong>과제 2</strong>에서 <code>age</code>를 <code>const</code>로 선언했다면 여기서 에러가 났을 겁니다. “바뀌는 값이라 <code>let</code>”이라는 판단이 실제로 필요했던 순간입니다.</li>
+    <li><strong>과제 5</strong>의 핵심은 <strong>반복문 안에 조건문이 들어간다</strong>는 구조입니다. 바깥 <code>for</code>가 1~10을 하나씩 꺼내주고, 안쪽 <code>if</code>가 그중 짝수만 통과시킵니다. “거르개(필터)”를 반복문 안에 끼운 셈인데, 3주차에서 배울 <code>filter</code>가 정확히 이 일을 더 간단하게 해줍니다.</li>
+    <li><code>i % 2 === 0</code>에서 <code>===</code>를 썼다는 점에 주목하세요. <code>=</code>를 쓰면 “넣어라”가 되어 전혀 다른 동작을 합니다.</li>
+  </ul>
+  <p>정답과 다르게 짰는데 결과가 맞다면 <strong>그것도 정답입니다.</strong> 프로그래밍에 유일한 답은 없습니다. 다만 “왜 그렇게 짰는지” 설명할 수 있어야 합니다.</p>
+</details>
+
+<hr>
+
+<div class="box career">
+  <span class="label">💼 취업 관점 — 지금부터 들이면 좋은 습관</span>
+  <ul>
+    <li><strong>변수 이름은 영어로, 의미가 드러나게.</strong> <code>a</code>, <code>bbb</code>, <code>data1</code> ❌ → <code>userName</code>, <code>totalPrice</code> ✅. 코드는 쓰는 시간보다 <em>읽는 시간</em>이 훨씬 깁니다.</li>
+    <li><strong>여러 단어는 카멜케이스(camelCase).</strong> <code>user_name</code>이 아니라 <code>userName</code> — JS의 표준 관례입니다. 면접관은 이런 데서 “이 사람이 JS를 써봤나”를 봅니다.</li>
+    <li><strong>불리언 변수는 <code>is</code>/<code>has</code>로 시작.</strong> <code>adult</code>보다 <code>isAdult</code>가 “참/거짓이구나”를 즉시 알려줍니다.</li>
+    <li><strong>에러 메시지를 끝까지 읽는 습관.</strong> 빨간 글씨가 무섭다고 넘기지 마세요. <code>TypeError: Assignment to constant variable</code>는 이미 답을 다 말해주고 있습니다. <strong>에러는 적이 아니라 힌트입니다.</strong></li>
+  </ul>
+</div>
+
+<div class="box">
+  <span class="label">✅ 다 했으면 — GitHub에 올리기</span>
+<pre><code>git add variables.js
+git commit -m "단계1 1주차: 변수·조건문·반복문 실습"
+git push origin main</code></pre>
+  <p>그리고 <code>PROGRESS.md</code>에 오늘 배운 것 3줄 + 다음 할 일을 적어두세요. <strong>커밋 기록(잔디)이 곧 포트폴리오</strong>입니다. 매주 쌓인 커밋은 “이 사람이 꾸준히 공부했다”는, 말보다 강한 증거가 됩니다.</p>
+</div>
+
+<h2>📚 더 볼 자료</h2>
+<ul>
+  <li><a href="https://ko.javascript.info/variables">모던 JavaScript 튜토리얼 — 변수</a> · <a href="https://ko.javascript.info/ifelse">조건문</a> · <a href="https://ko.javascript.info/while-for">반복문</a> (한국어, 가장 추천)</li>
+  <li><a href="https://developer.mozilla.org/ko/docs/Web/JavaScript/Guide/Grammar_and_types">MDN — 문법과 자료형</a></li>
+</ul>
+
+<div class="nav">
+  <a href="index.html">← 목차</a>
+  <a href="stage1-week2.html">2주차: 함수 · 배열 · 객체 →</a>
+</div>
+
+<footer>
+  단계 1 · 1주차 — studyApp 학습 교안 · React Native 취업 커리큘럼
+</footer>
+
+</div>
+</body>
+</html>
